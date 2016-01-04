@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webglass demo</title>
+    <style>
+      #canvas4 {
+        width:100%;
+      }
+    </style>
+    <script data-main="dist/webglass" src="node_modules/requirejs/require.js"></script>
+    <script>
+    // // set our baseURL reference path
+    // System.config({
+    //   baseURL: '/dist'
+    // });
+    //
+    // // loads /app/main.js
+    // System.import('webglass');
+    </script>
+  </head>
+  <body>
+    <canvas id="test" data-fragment-url="raytracer.glsl" responsive="true"></canvas>
+  </body>
+</html>
