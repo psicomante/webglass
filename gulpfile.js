@@ -29,11 +29,13 @@ gulp.task("docs:generate", function() {
             module: "amd",
             target: "es5",
             out: "docs/",
-            name: "My project title"
+            name: "WebGlass, a tiny WebGL library for shaders demos"
         }))
     ;
 });
+
 gulp.task("docs:serve", shell.task([
   "npm run-script lite -- --baseDir './docs'",
 ]));
+
 gulp.task("docs", ['docs:generate', 'docs:serve']);
