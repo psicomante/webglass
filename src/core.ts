@@ -1,8 +1,5 @@
-/**
- *
- */
 export class Canvas {
-  private HTMLCanvasElement;
+  public HTMLCanvasElement;
 
   constructor(id: string) {
     this.HTMLCanvasElement = document.getElementById(id);
