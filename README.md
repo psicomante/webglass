@@ -31,7 +31,7 @@ var wgl = new Webglass.Tornado();
 
 ### Install all the dependencies
 
-```
+```sh
 // install rollup
 npm install -g rollup
 
