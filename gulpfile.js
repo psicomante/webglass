@@ -27,8 +27,3 @@ wrench.readdirSyncRecursive('./tasks').filter(function(file) {
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
-
-// clean the contents of the distribution directory
-gulp.task('clean', function () {
-  return del('dist/**/*');
-});

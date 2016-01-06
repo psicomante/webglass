@@ -8,7 +8,8 @@
     "tsc:w": "tsc -w",
     "lite": "lite-server",
     "start": "concurrent \"npm run tsc:w\" \"npm run lite\" ",
-    "docs": "lite-server --baseDir './'"
+    "docs": "lite-server --baseDir './'",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",

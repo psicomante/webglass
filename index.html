@@ -10,13 +10,14 @@
     <script src="dist/webglass.rollup.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function(event) {
-      var wgl = new Webglass.Tornado();
+      // var wgl = new Webglass.Tornado();
+      var wgl = new Webglass.Canvas(document.getElementById('first'));
     });
     </script>
   </head>
   <body>
 
-    <canvas height="400" width="800"></canvas>
+    <canvas height="400" width="800" id="first" data-fragment-url="assets/glsl/default.glsl"></canvas>
     <canvas height="400" width="800"></canvas>
     <canvas height="400" width="800"></canvas>
     <canvas height="400" width="800"></canvas>

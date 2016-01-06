@@ -75,6 +75,14 @@ export class Canvas {
 
   private settings: WebglassSettings;
   private startTime:any;
+
+  /**
+   * Flag used by set uniform to avoid redundant setUniform calls
+   * @type {boolean}
+   */
+  private flushResolution: boolean = true;
+
+
   /**
    * Webglass constructor
    * @param  {HTMLCanvasElement or String}  canvas
@@ -89,13 +97,16 @@ export class Canvas {
       this.canvas = <HTMLCanvasElement>document.getElementById(canvas);
     }
 
+    // assign settings
+    this.settings = Tools.assign(defaultSettings, settings);
+
+    // debug Flag
+    this.debug = this.settings.debug;
+
     this.vbo = [];
 
     // default fragment source
     this.fragmentSource = defaultSettings.fragmentSrc;
-
-    // assign settings
-    this.settings = Tools.assign(settings, defaultSettings);
 
     // create canvas
     this.canvas = canvas;
@@ -314,6 +325,38 @@ export class Canvas {
     this.loop();
   }
 
+  /**
+   * Render the canvas
+   *
+   * Render if the forceRender variable is set to true or the canvas
+   * is visible
+   *
+   * @param  {boolean} forceRender force the render call
+   */
+  render(forceRender: boolean) {
+    if (forceRender || this.isCanvasVisible()) {
+
+      // set the time uniform
+      let timeFrame = Date.now();
+      let time = (timeFrame - this.startTime) / 1000.0;
+      this.setUniform('u_time', time);
+
+      // set the resolution uniform
+      if (this.flushResolution) {
+        this.setUniform('u_resolution', [this.canvas.width, this.canvas.height]);
+        this.flushResolution = false;
+      }
+
+      // this.texureIndex = 0;
+      // for (let tex in this.textures) {
+      //   this.setUniform(tex, this.textures[tex].url);
+      // }
+
+      // Draw the rectangle.
+      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+    }
+  };
+
   setResponsive() {
     var realToCSSPixels = window.devicePixelRatio || 1;
     var canvas = this.canvas;
@@ -351,30 +394,6 @@ export class Canvas {
 
   isPlaying() {
     return this.playing;
-  }
-
-  render(forceRender: boolean) {
-    if (forceRender || this.shouldRender()) {
-      // set the time uniform
-      let timeFrame = Date.now();
-      let time = (timeFrame - this.startTime) / 1000.0;
-      this.setUniform('u_time', time);
-
-      // set the resolution uniform
-      this.setUniform('u_resolution', [this.canvas.width, this.canvas.height]);
-
-      // this.texureIndex = 0;
-      // for (let tex in this.textures) {
-      //   this.setUniform(tex, this.textures[tex].url);
-      // }
-
-      // Draw the rectangle.
-      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
-    }
-  };
-
-  shouldRender() {
-    return this.animated && this.isCanvasVisible();
   }
 
   /**

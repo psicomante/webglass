@@ -4,16 +4,12 @@ const tscConfig = require('../tsconfig.json');
 const shell = require('gulp-shell');
 const package = require("../package.json");
 
-// TypeScript compile
-gulp.task('compile', ['clean'], function () {
-  return gulp
-    .src('src/**/*.ts')
-    .pipe(typescript(tscConfig.compilerOptions))
-    .pipe(gulp.dest('dist/app'));
-});
-
-gulp.task('build', ['compile']);
 gulp.task('default', ['build']);
+
+// clean the contents of the distribution directory
+gulp.task('clean', function () {
+  return del('dist/**/*');
+});
 
 gulp.task('deploy', function(cb){
   var ghpages = require('gh-pages');
