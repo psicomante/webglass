@@ -29,7 +29,7 @@ var wgl = new Webglass.Tornado();
 
 ## Contributing
 
-# Install all the dependencies
+### Install all the dependencies
 
 ```
 // install rollup
@@ -44,11 +44,3 @@ npm install
 // run webglass build
 rollup -c
 ```
-
-## Use
-
-```
-<script data-main="dist/webglass" src="node_modules/requirejs/require.js"></script>
-```
-
-and load the library
