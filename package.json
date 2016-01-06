@@ -1,7 +1,7 @@
 {
-  "name": "webglass",
-  "version": "0.2.0",
-  "description": "A webgl library for shaders demo",
+  "name": "WebGlass",
+  "version": "0.3.0",
+  "description": "a tiny WebGL library for shaders demos",
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
@@ -27,10 +27,8 @@
     "gulp-typedoc": "^1.2.1",
     "gulp-typescript": "^2.10.0",
     "lite-server": "^1.3.2",
+    "rollup": "^0.24.0",
+    "rollup-plugin-typescript": "^0.2.1",
     "typescript": "^1.8.0-dev.20160104"
-  },
-  "dependencies": {
-    "requirejs": "^2.1.22",
-    "systemjs": "^0.19.9"
   }
 }
