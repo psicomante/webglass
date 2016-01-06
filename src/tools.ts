@@ -1,5 +1,13 @@
+/**
+ * Webglass Utilities Functions
+ */
 export module Tools {
 
+  /**
+   * A default fragment, that shows a changing coloured background
+   * based on the interpolated vertex position
+   * @type {[type]}
+   */
   export const defaultVertexSrc = `
   precision highp float;
 

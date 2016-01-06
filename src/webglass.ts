@@ -2,7 +2,8 @@
  * This is WebGlass,
  * a WebGL library i made in order to learn WebGL, Shaders and in general, Computer Graphics.
  */
-import {WebGLCanvas} from './core';
+
+// import {WebGLCanvas} from './core';
 import {WebGLU} from './webgl';
 import {Tools} from './tools';
 
@@ -15,8 +16,8 @@ interface WebglassSettings {
 
 const defaultSettings:WebglassSettings = {
   managed: true,
-  stoppable: true,
-  responsive: true,
+  stoppable: false,
+  responsive: false,
   fragmentSrc: Tools.defaultFragmentSrc
 }
 
@@ -85,10 +86,13 @@ export class WebGlass {
     this.vbo = [];
 
     // default fragment source
-    this.fragmentSource = settings.fragmentSrc;
+    this.fragmentSource = defaultSettings.fragmentSrc;
 
     // assign settings
     this.settings = settings;
+    if (!settings) {
+      this.settings = defaultSettings;
+    }
 
     // create canvas
     this.canvas = canvas;
@@ -160,12 +164,12 @@ export class WebGlass {
     }
 
     // redefine console
-    var old = console.log;
-    console.log = function(){
-      if (debug) return;
-      Array.prototype.unshift.call(arguments, 'Report: ');
-      old.apply(this, arguments)
-    }
+    // var old = console.log;
+    // console.log = function(){
+    //   if (debug) return;
+    //   Array.prototype.unshift.call(arguments, 'Report: ');
+    //   old.apply(this, arguments)
+    // }
 
 
   }
@@ -291,7 +295,7 @@ export class WebGlass {
 
   loop() {
     if (this.playing) {
-      this.render(true);
+      this.render(false);
       this.animationFrame = window.requestAnimationFrame(this.loop.bind(this));
     }
   }
@@ -346,11 +350,8 @@ export class WebGlass {
     return this.playing;
   }
 
-  render(forceRender) {
-
-    if ((forceRender !== undefined && forceRender) ||
-    (this.animated && this.isCanvasVisible())) {
-
+  render(forceRender: boolean) {
+    if (forceRender || this.shouldRender()) {
       // set the time uniform
       let timeFrame = Date.now();
       let time = (timeFrame - this.startTime) / 1000.0;
@@ -369,10 +370,12 @@ export class WebGlass {
     }
   };
 
+  shouldRender() {
+    return this.animated && this.isCanvasVisible();
+  }
+
   /**
-   * [isCanvasVisible description]
-   * @param  {[type]}  canvas [description]
-   * @return {Boolean}        [description]
+   * Checks if the current canvas is visible on the browser or hidden down the page
    */
   isCanvasVisible() {
     return	(this.canvas.getBoundingClientRect().top + this.canvas.height) > 0 &&
@@ -380,7 +383,7 @@ export class WebGlass {
   }
 
   static version() {
-    return '0.2.0';
+    return '0.3.0';
   };
 }
 
@@ -389,7 +392,7 @@ export class WebGlass {
  *
  *
  */
-export class WebGlassTornado {
+export class WebglassTornado {
 
   private static CANVAS_ATTRIBUTES: Array<string> = ['managed', 'responsive'];
 
@@ -399,7 +402,7 @@ export class WebGlassTornado {
    */
   private webglassList: Array<WebGlass>;
 
-  constructor(options) {
+  constructor() {
     // webglass object list
     this.webglassList = [];
 
@@ -416,7 +419,7 @@ export class WebGlassTornado {
     for (let i = 0; i < canvasList.length; i++) {
       let canvas = canvasList[i];
       let canvasOptions = this.getAttributes(canvas);
-      let wgl = new WebGlass(canvas, true, <WebglassSettings>canvasOptions);
+      let wgl = new WebGlass(canvas, true, defaultSettings);
       if (wgl.isValid) {
         this.webglassList.push(wgl);
       }
@@ -426,11 +429,11 @@ export class WebGlassTornado {
   getAttributes(canvas) {
     var attributes = {};
 
-    for (let i = 0; i < WebGlassTornado.CANVAS_ATTRIBUTES.length; i++) {
-      var attribute = canvas.getAttribute(WebGlassTornado.CANVAS_ATTRIBUTES[i]);
+    for (let i = 0; i < WebglassTornado.CANVAS_ATTRIBUTES.length; i++) {
+      var attribute = canvas.getAttribute(WebglassTornado.CANVAS_ATTRIBUTES[i]);
 
       if (attribute) {
-        attributes[WebGlassTornado.CANVAS_ATTRIBUTES[i]] = attribute;
+        attributes[WebglassTornado.CANVAS_ATTRIBUTES[i]] = attribute;
       }
     }
 
@@ -438,4 +441,5 @@ export class WebGlassTornado {
   }
 }
 
-let wgl:WebGlass = new WebGlass(<HTMLCanvasElement>document.getElementById('test'), true, defaultSettings);
+// let wgl:WebGlass = new WebGlass(<HTMLCanvasElement>document.getElementById('test'), true, defaultSettings);
+// let tornado:WebGlassTornado = new WebGlassTornado();

@@ -1,13 +1,17 @@
 /**
  * a generic webgl utility module used in WebGlass;
  *
- *
  * Thx to (for inspiration, code and lessons learned)
  * - Gregg Tavares - @greggman
  *   webgl-utils.js <https://github.com/greggman/webgl-fundamentals/blob/master/webgl/resources/webgl-utils.js>
  */
 export module WebGLU {
 
+  /**
+   * [logError description]
+   * @param  {[type]} msg [description]
+   * @return {[type]}     [description]
+   */
   function logError(msg) {
     console.error('[WEBGLASS] ', msg);
   }

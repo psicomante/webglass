@@ -1,41 +1,34 @@
-const gulp = require('gulp');
-const del = require('del');
-const typescript = require('gulp-typescript');
-const tscConfig = require('./tsconfig.json');
-const shell = require('gulp-shell');
-const typedoc = require("gulp-typedoc");
+/**
+ *  Welcome to your gulpfile!
+ *  The gulp tasks are splitted in several files in the gulp directory
+ *  because putting all here was really too long
+ */
+
+'use strict';
+
+var gulp = require('gulp');
+var wrench = require('wrench');
+
+/**
+ *  This will load all js or coffee files in the gulp directory
+ *  in order to load all gulp tasks
+ */
+wrench.readdirSyncRecursive('./tasks').filter(function(file) {
+  return (/\.(js|coffee)$/i).test(file);
+}).map(function(file) {
+  require('./tasks/' + file);
+});
+
+
+/**
+ *  Default task clean temporaries directories and launch the
+ *  main optimization build task
+ */
+gulp.task('default', ['clean'], function () {
+  gulp.start('build');
+});
 
 // clean the contents of the distribution directory
 gulp.task('clean', function () {
   return del('dist/**/*');
 });
-
-// TypeScript compile
-gulp.task('compile', ['clean'], function () {
-  return gulp
-    .src('src/**/*.ts')
-    .pipe(typescript(tscConfig.compilerOptions))
-    .pipe(gulp.dest('dist/app'));
-});
-
-gulp.task('build', ['compile']);
-gulp.task('default', ['build']);
-
-// typedoc
-gulp.task("docs:generate", function() {
-    return gulp
-        .src(["src/**/*.ts"])
-        .pipe(typedoc({
-            module: "amd",
-            target: "es5",
-            out: "docs/",
-            name: "WebGlass, a tiny WebGL library for shaders demos"
-        }))
-    ;
-});
-
-gulp.task("docs:serve", shell.task([
-  "npm run-script lite -- --baseDir './docs'",
-]));
-
-gulp.task("docs", ['docs:generate', 'docs:serve']);
