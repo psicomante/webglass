@@ -61,4 +61,6 @@ export module Tools {
     }
   }
 
+  export var assign = Object.assign;
+
 }

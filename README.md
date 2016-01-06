@@ -23,7 +23,7 @@ or call Tornado for activating webglass on all Canvases in the page
 var wgl = new Webglass.Tornado();
 ```
 
-### Data Attributes
+### Canvas Data Attributes
 
 * `data-fragment-url`: relative path to the fragment shader to load
 

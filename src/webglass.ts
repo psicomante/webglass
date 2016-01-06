@@ -1,13 +1,13 @@
 /**
- * This is WebGlass,
+ * This is Canvas,
  * a WebGL library i made in order to learn WebGL, Shaders and in general, Computer Graphics.
  */
 
-// import {WebGLCanvas} from './core';
 import {WebGLU} from './webgl';
 import {Tools} from './tools';
 
 interface WebglassSettings {
+  debug: boolean;
   managed: boolean;
   stoppable: boolean;
   responsive?: boolean;
@@ -15,6 +15,7 @@ interface WebglassSettings {
 }
 
 const defaultSettings:WebglassSettings = {
+  debug: false,
   managed: true,
   stoppable: false,
   responsive: false,
@@ -22,7 +23,7 @@ const defaultSettings:WebglassSettings = {
 }
 
 
-export class WebGlass {
+export class Canvas {
 
   /**
    * Debug Activation Flag
@@ -76,12 +77,17 @@ export class WebGlass {
   private startTime:any;
   /**
    * Webglass constructor
-   * @param  {string}  id    [description]
+   * @param  {HTMLCanvasElement or String}  canvas
    * @param  {boolean} debug [description]
    * @return {[type]}        [description]
    */
-  constructor(canvas: HTMLCanvasElement, debug: boolean, settings:WebglassSettings) {
+  constructor(canvas:any, settings) {
     var self = this;
+
+    // The canvas passed value is a string, make a getElementById
+    if (typeof canvas === 'string' || canvas instanceof String) {
+      this.canvas = <HTMLCanvasElement>document.getElementById(canvas);
+    }
 
     this.vbo = [];
 
@@ -89,10 +95,7 @@ export class WebGlass {
     this.fragmentSource = defaultSettings.fragmentSrc;
 
     // assign settings
-    this.settings = settings;
-    if (!settings) {
-      this.settings = defaultSettings;
-    }
+    this.settings = Tools.assign(settings, defaultSettings);
 
     // create canvas
     this.canvas = canvas;
@@ -388,11 +391,11 @@ export class WebGlass {
 }
 
 /**
- * WebGlassTornado is a class that allows to activate a webglass on every canvas on the page
+ * CanvasTornado is a class that allows to activate a webglass on every canvas on the page
  *
  *
  */
-export class WebglassTornado {
+export class Tornado {
 
   private static CANVAS_ATTRIBUTES: Array<string> = ['managed', 'responsive'];
 
@@ -400,7 +403,7 @@ export class WebglassTornado {
    * List of webglass instance, one for each canvas
    * @type {Array<HTMLCanvasElement>}
    */
-  private webglassList: Array<WebGlass>;
+  private webglassList: Array<Canvas>;
 
   constructor() {
     // webglass object list
@@ -419,7 +422,7 @@ export class WebglassTornado {
     for (let i = 0; i < canvasList.length; i++) {
       let canvas = canvasList[i];
       let canvasOptions = this.getAttributes(canvas);
-      let wgl = new WebGlass(canvas, true, defaultSettings);
+      let wgl = new Canvas(canvas, defaultSettings);
       if (wgl.isValid) {
         this.webglassList.push(wgl);
       }
@@ -429,11 +432,11 @@ export class WebglassTornado {
   getAttributes(canvas) {
     var attributes = {};
 
-    for (let i = 0; i < WebglassTornado.CANVAS_ATTRIBUTES.length; i++) {
-      var attribute = canvas.getAttribute(WebglassTornado.CANVAS_ATTRIBUTES[i]);
+    for (let i = 0; i < Tornado.CANVAS_ATTRIBUTES.length; i++) {
+      var attribute = canvas.getAttribute(Tornado.CANVAS_ATTRIBUTES[i]);
 
       if (attribute) {
-        attributes[WebglassTornado.CANVAS_ATTRIBUTES[i]] = attribute;
+        attributes[Tornado.CANVAS_ATTRIBUTES[i]] = attribute;
       }
     }
 
@@ -441,5 +444,5 @@ export class WebglassTornado {
   }
 }
 
-// let wgl:WebGlass = new WebGlass(<HTMLCanvasElement>document.getElementById('test'), true, defaultSettings);
-// let tornado:WebGlassTornado = new WebGlassTornado();
+// let wgl:Canvas = new Canvas(<HTMLCanvasElement>document.getElementById('test'), true, defaultSettings);
+// let tornado:CanvasTornado = new CanvasTornado();
