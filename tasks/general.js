@@ -1,8 +1,9 @@
-const gulp = require('gulp');
+const gulp       = require('gulp');
 const typescript = require('gulp-typescript');
-const tscConfig = require('../tsconfig.json');
-const shell = require('gulp-shell');
-const package = require("../package.json");
+const tscConfig  = require('../tsconfig.json');
+const shell      = require('gulp-shell');
+const del        = require('del');
+const package    = require("../package.json");
 
 gulp.task('default', ['build']);
 

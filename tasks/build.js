@@ -13,7 +13,6 @@ gulp.task('compile', function () {
 
 gulp.task("serve", ['compile'], function(){
   gulp.watch('src/**/*.ts', ['compile']).on('change', function(file) {
-    console.log(file);
   });
 
   return gulp.src('*.js', {read: false})

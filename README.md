@@ -42,5 +42,8 @@ npm install -g gulp
 npm install
 
 // run webglass build
-rollup -c
+gulp
+
+// run webglass build and test server with watch features
+gulp serve
 ```
