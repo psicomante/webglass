@@ -11,18 +11,15 @@
     <script>
     document.addEventListener("DOMContentLoaded", function(event) {
       // var wgl = new Webglass.Tornado();
-      var wgl = new Webglass.Canvas(document.getElementById('first'));
+      var wgl = new Webglass.Canvas(document.getElementById('first'), {
+        managed:true,
+        randomizeInit: true
+      });
     });
     </script>
   </head>
   <body>
 
-    <canvas height="400" width="800" id="first" data-fragment-url="assets/glsl/default.glsl"></canvas>
-    <canvas height="400" width="800"></canvas>
-    <canvas height="400" width="800"></canvas>
-    <canvas height="400" width="800"></canvas>
-    <canvas height="400" width="800" data-fragment-url="assets/glsl/frag2.glsl"></canvas>
-    <canvas height="400" width="800" data-fragment-url="assets/glsl/example.glsl"></canvas>
-    <canvas height="400" width="800" id="test"></canvas>
+    <canvas height="400" width="800" id="first" data-fragment-url="assets/glsl/swirl.glsl"></canvas>
   </body>
 </html>

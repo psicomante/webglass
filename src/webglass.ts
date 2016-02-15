@@ -1,6 +1,10 @@
 /**
  * This is Canvas,
  * a WebGL library i made in order to learn WebGL, Shaders and in general, Computer Graphics.
+ *
+ * @TODO
+ * - randomize init time
+ *
  */
 
 import {WebGLU} from './webgl';
@@ -10,8 +14,9 @@ interface WebglassSettings {
   debug: boolean;
   managed: boolean;
   stoppable: boolean;
-  responsive?: boolean;
-  fragmentSrc?: string;
+  responsive: boolean;
+  randomizeInit: boolean;
+  fragmentSrc: string;
 }
 
 const defaultSettings:WebglassSettings = {
@@ -19,7 +24,9 @@ const defaultSettings:WebglassSettings = {
   managed: true,
   stoppable: false,
   responsive: false,
+  randomizeInit: false,
   fragmentSrc: Tools.defaultFragmentSrc
+
 }
 
 
@@ -74,7 +81,12 @@ export class Canvas {
   private vbo: Array<Float32Array>;
 
   private settings: WebglassSettings;
-  private startTime:any;
+
+  /**
+   * [startTime description]
+   * @type {any}
+   */
+  private startTime: number;
 
   /**
    * Flag used by set uniform to avoid redundant setUniform calls
@@ -152,6 +164,7 @@ export class Canvas {
     }
 
     // Start RenderLoop or calls only a Draw
+    this.initTime(this.settings.randomizeInit);
     if (this.settings.managed) {
       this.start();
     } else {
@@ -321,8 +334,17 @@ export class Canvas {
 
   start() {
     this.playing = true;
-    this.startTime = Date.now();
     this.loop();
+  }
+
+  initTime(randomize?: boolean){
+    this.startTime = Date.now();
+    // console.log(this.startTime);
+    if (randomize == true) {
+      // provide a shift of -5,5 milliseconds
+      this.startTime -= Math.ceil((Math.random()*5000));
+    }
+    // console.log(this.startTime);
   }
 
   /**
@@ -382,6 +404,8 @@ export class Canvas {
     if (!this.settings.managed) {
       this.render(true);
     }
+
+    this.flushResolution = true;
   }
 
   isValid() {
@@ -424,7 +448,7 @@ export class Tornado {
    */
   private webglassList: Array<Canvas>;
 
-  constructor() {
+  constructor(settings?) {
     // webglass object list
     this.webglassList = [];
 
@@ -441,7 +465,7 @@ export class Tornado {
     for (let i = 0; i < canvasList.length; i++) {
       let canvas = canvasList[i];
       let canvasOptions = this.getAttributes(canvas);
-      let wgl = new Canvas(canvas, defaultSettings);
+      let wgl = new Canvas(canvas, settings);
       if (wgl.isValid) {
         this.webglassList.push(wgl);
       }
