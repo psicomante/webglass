@@ -34,7 +34,5 @@
     "rollup-plugin-typescript": "git+https://github.com/psicomante/rollup-plugin-typescript.git",
     "typescript": "^1.8.0-dev.20160104"
   },
-  "dependencies": {
-    "rollup-plugin-typescript": "git+https://github.com/psicomante/rollup-plugin-typescript.git"
-  }
+  "dependencies": {}
 }
